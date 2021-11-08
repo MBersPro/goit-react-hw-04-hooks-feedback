@@ -1,53 +1,49 @@
-import React, { Component } from 'react';
-import FeedbackOptions from './feedbackOptions/FeedbackOptions';
-import Section from './section/Section';
-import Statistics from './statistics/Statistics';
+import React, { useState } from "react";
+import FeedbackOptions from "./feedbackOptions/FeedbackOptions";
+import Section from "./section/Section";
+import Statistics from "./statistics/Statistics";
 
-class App extends Component {
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0,
-    };
+const initialState = {
+  good: 0,
+  neutral: 0,
+  bad: 0,
+};
 
+const App = () => {
+  const [state, setState] = useState({ ...initialState });
 
-    leaveFeedback = (name) => {
-        this.setState((prev) => ({
-            [name]: prev[name] + 1
-        }))
-    }
+  const leaveFeedback = (name) => {
+    setState((prev) => ({...prev, 
+      [name]: prev[name] + 1,
+    }));
+  };
 
-    countTotalFeedback = () => {
-        const { good, neutral, bad } = this.state
-    return good + neutral + bad
-    }
-    
-    
+  const countTotalFeedback = () => {
+    const { good, neutral, bad } = state;
+    return good + neutral + bad;
+  };
 
-    
-    countPositiveFeedbackPercentage = () => {
-        return Math.floor(this.state.good / this.countTotalFeedback() * 100) || 0
-    }
+  const countPositiveFeedbackPercentage = () => {
+    return Math.floor((state.good / countTotalFeedback()) * 100) || 0;
+  };
 
-    render() {
-        return (
-            <>
-                <Section title={"Please Leave Feedback"}>
-                    <FeedbackOptions
-                        leaveFeedback={this.leaveFeedback}
-                        fbOptions={["good", "neutral", "bad"]}
-                    />
-                </Section>
-                <Section title={"Statistics"}>
-                    <Statistics
-                        state={Object.entries(this.state)}
-                        total={this.countTotalFeedback()}
-                        percentage={this.countPositiveFeedbackPercentage()}
-                    />
-                </Section>
-            </>
-        )
-    };
-}
+  return (
+    <>
+      <Section title={"Please Leave Feedback"}>
+        <FeedbackOptions
+          leaveFeedback={leaveFeedback}
+          fbOptions={["good", "neutral", "bad"]}
+        />
+      </Section>
+      <Section title={"Statistics"}>
+        <Statistics
+          state={Object.entries(state)}
+          total={countTotalFeedback()}
+          percentage={countPositiveFeedbackPercentage()}
+        />
+      </Section>
+    </>
+  );
+};
 
 export default App;
