@@ -32,7 +32,7 @@ const App = () => {
       <Section title={"Please Leave Feedback"}>
         <FeedbackOptions
           leaveFeedback={leaveFeedback}
-          fbOptions={["good", "neutral", "bad"]}
+          fbOptions={Object.keys(state)}
         />
       </Section>
       <Section title={"Statistics"}>
